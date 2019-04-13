@@ -79,6 +79,13 @@ def train(wide_column, deep_column, model_floder, model_type="wide_deep"):
     print("\n")
 
 
+def predict(wide_column, deep_column, model_floder, model_type="wide_deep"):
+    """模型预测"""
+    model, serving_input_fn = build_model_estimator(wide_column, deep_column, model_floder, model_type="wide_deep")
+    result = model.predict(input_fn=input_fn(test_file, num_epochs=1, shuffle=False, batch_size=100))
+    print(result)
+
+
 def main():
     wide_column, deep_column = get_feature_column()
     model_types = ["wide", "deep", "wide_deep"]

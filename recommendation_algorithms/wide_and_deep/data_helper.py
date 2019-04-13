@@ -13,6 +13,7 @@ if not os.path.exists(data_dir):
 
 
 def download_data():
+    """数据集下载"""
     base_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/adult/{}'
     train_file = "adult.data"
     test_file = "adult.test"
@@ -38,6 +39,7 @@ _CSV_COLUMN_DEFAULTS = [[0], [''], [0], [''], [0], [''], [''], [''], [''], [''],
 
 
 def read_data(data_file, test=False):
+    """生成训练数据"""
     tf_data = pd.read_csv(
         tf.gfile.Open(data_file),
         names=_CSV_COLUMNS,
