@@ -20,7 +20,7 @@ def _declarative_constructor(self, **kwargs):
             setattr(self, time_key, now)
     for time_key in ["update_time"]:
         if hasattr(cls_, time_key):
-            setattr(self, time_key, datetime.datetime.now())
+            setattr(self, time_key, now)
 
 
 _declarative_constructor.__name__ = "__init__"
@@ -55,6 +55,8 @@ def try_commit_rollback(expunge=None):
                         db_session.expunge(res)
                     else:
                         raise TypeError("Please ensure object(s) is instance(s) of BaseModel")
+                # import ipdb
+                # ipdb.set_trace()
                 db_session.commit()
             except exc.IntegrityError as e:  # duplicate key
                 db_session.rollback()

@@ -14,7 +14,7 @@ print(log_str)
 
 recomender = Recommender()
 
-app = create_app(LocalConfig.runtime)  # 运行环境
+app = create_app()  # 运行环境
 
 # 初始化
 Preprocessor().run(app)

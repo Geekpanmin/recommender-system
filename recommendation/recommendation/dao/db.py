@@ -28,7 +28,7 @@ mysql_db_uri = 'mysql+pymysql://{user}:{password}@{host}:{port}/{db}?charset=utf
 #     "echo": False 显示执行的SQL语句 #想查看语句直接print str(session.query(UserProfile).filter_by(user_id='xxxx'))
 # }
 
-sqlite_db_engine = create_engine(sqlite_db_uri, pool_size=5, pool_recycle=7200, pool_pre_ping=True, max_overflow=-1)
+sqlite_db_engine = create_engine(sqlite_db_uri, pool_recycle=7200, pool_pre_ping=True)  #pool_size=5,  , max_overflow=-1
 mysql_db_engine = create_engine(mysql_db_uri, pool_size=5, pool_recycle=7200, pool_pre_ping=True, max_overflow=-1)
 
 
@@ -41,7 +41,7 @@ class DB(object):
 
     @property
     def db_engine(self):
-        db_engine = {"mysql": mysql_db_uri, "sqlite": sqlite_db_uri}.get(self.__db)
+        db_engine = {"mysql": mysql_db_engine, "sqlite": sqlite_db_engine}.get(self.__db)
         if db_engine:
             return db_engine
         raise ValueError("Please ensure your database is set up correctly")
@@ -93,6 +93,6 @@ class DB(object):
 # mongodb
 class Mongo(object):
     # pass
-    connect(**config.mongodb)
+    connect(**config.mongodb_conf)
     # # 连接数据库，不存在则会自动创建
-    register_connection("poem_db", db=config.mongodb_conf["poem"], host=config.mongodb_conf['host'])
+    register_connection("poem_db", db=config.mongodb_conf["db"], host=config.mongodb_conf['host'])

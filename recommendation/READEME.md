@@ -1,0 +1,32 @@
+# 服务器部署
+
+1. 环境准备  
+> 安装nginx，按照docs/nginx.md 文档配置并启动nginx     
+> pip install -r requirements.txt
+
+2.启动服务：
+> python3 server.py  
+or  
+> nohup gunicorn -w 2 --threads 4 -t 10 -k gevent -b 127.0.0.1:9001 server:app --log-level=debug --reload --max-requests 1000 &
+
+# gunicorn
+
+|参数|说明|  others|
+|---|---|  ---|  
+|-k|网络模型，gevent提升性能|默认使用同步阻塞的网络模型(-k sync)|
+|-w|work进程数目，注意内存占用|用于处理工作进程的数量，为正整数，默认为1。worker推荐的数量为当前的CPU个数*2 + 1|
+|--threads|线程数目，默认1|The number of worker threads for handling requests.A positive integer generally in the 2-4 x $(NUM_CORES) range|
+|--reload|监测到代码变动时重启服务|Restart workers when code changes.|
+|-b|绑定套接字|可绑定多个|
+|--max-requests|处理这么多请求后重启worker，避免内存泄漏|The maximum number of requests a worker will process before restarting|
+|-t INT, --timeout INT|无响应重启，默认30s|Workers silent for more than this many seconds are killed and restarted.|
+
+
+2、关闭和重启  
+> pkill gunicorn      //*是否加-f参数都会有约一分钟的延时
+
+
+### 参考文档
+[gunicorn doc](http://docs.gunicorn.org/en/latest/settings.html)
+
+

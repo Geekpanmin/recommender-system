@@ -17,6 +17,7 @@ class Poem(Document):
     paragraphs = ListField(required=True)
     strains = ListField(required=True, unique_with="user_id")
     title = StringField(required=True)
+    other = StringField(required=False)
 
 
 class Ci(Document):
@@ -33,4 +34,5 @@ class Ci(Document):
 
     author = StringField(required=True)
     paragraphs = ListField(required=True)
-    rhythmic = ListField(required=True, unique_with="user_id")
+    rhythmic = ListField(required=False, unique_with="user_id")
+    other = StringField(required=False)

@@ -1,7 +1,9 @@
 from flask import jsonify, abort, request, current_app
 
-from manage import recomender
+from recommendation.recommender import Recommender
 from . import main
+
+recommender = Recommender()
 
 
 @main.after_app_request
@@ -32,7 +34,7 @@ def test():
 
 @main.route('/recommend/', methods=['GET', 'POST'])
 def recommend():
-    user_id = request.form["user_id"]
-    num = int(request.form["num"])
-    poems = recomender.recommend(user_id, num)
+    user_id = request.form.get("user_id", "")
+    num = int(request.form.get("num", 20))
+    poems = recommender.recommend(user_id, num)
     return jsonify([poem.to_dict() for poem in poems])

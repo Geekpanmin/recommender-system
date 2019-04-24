@@ -1,5 +1,4 @@
 import argparse
-import os
 
 from recommendation.utils.logger import logging_config
 
@@ -9,8 +8,10 @@ def deploy():
     create_all()
 
 
-def recommend():
-    logging_config("recommend.log")
+def task():
+    logging_config("task.log")
+    from recommendation.tasks.load_poem import Task
+    Task().run()
 
 
 def test():
@@ -24,16 +25,17 @@ def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)  # 一组互斥参数,且至少需要互斥参数中的一个
     group.add_argument('--test', '-t', action="store_true")
-    parser.add_argument('--runtime', default="prod", type=str, choices=["prod", "local"])
+    group.add_argument('--task', action="store_true")
     # parse args
     args = parser.parse_args()
-    os.environ['runtime'] = args.runtime
 
     if args.test:
         test()
-    else:
-        recommend()
+    elif args.task:
+        task()
 
 
 if __name__ == '__main__':
+    # deploy()
+    # task()
     main()
