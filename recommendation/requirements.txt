@@ -1,0 +1,13 @@
+flask
+pymysql
+redis
+sqlalchemy
+flask_mail
+flask_script
+flask_sqlalchemy
+gevent
+mongoengine
+gunicorn
+numpy
+tensorflow
+keras

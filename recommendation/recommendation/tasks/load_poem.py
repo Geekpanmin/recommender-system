@@ -37,8 +37,11 @@ class Task(object):
             # print(poetry_json)
             poem_dict = {"type": 0, "name": poetry_json["name"],
                          "dynasty": poetry_json["dynasty"],
+                         "about": poetry_json.get("about", ""),
+                         "tags": ",".join(poetry_json["tags"]),
                          "poet_name": poetry_json["poet"]["name"], "poet_id": poetry_json["poet"]["id"],
-                         "picture": "", "content": poetry_json["content"],
+                         "picture": "",
+                         "content": poetry_json["content"].replace("<br>", "\n"),
                          "strains": "", "fanyi": poetry_json.get("fanyi", ""),
                          "shangxi": poetry_json.get("shangxi", ""),
                          "star": poetry_json["star"], "source": "gushiwen.org"}

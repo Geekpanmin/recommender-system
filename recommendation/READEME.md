@@ -26,6 +26,7 @@ or
 > pkill gunicorn      //*是否加-f参数都会有约一分钟的延时
 
 
+
 ### 参考文档
 [gunicorn doc](http://docs.gunicorn.org/en/latest/settings.html)
 
