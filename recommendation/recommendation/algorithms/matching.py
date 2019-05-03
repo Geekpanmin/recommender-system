@@ -1,5 +1,12 @@
 """
 Matching阶段通过i2i/u2i/u2u/user profile等方式“粗糙”的召回候选商品，Matching阶段视频的数量是百级别了
+基于业务/规则的召回：热门召回，标签召回，话题召回，地理召回......
+基于Item-Embedding的向量召回：word2vec/node2vec，FM，DNN之类的有监督NN召回以前传统的i2i算法（Cosine-CF, Swing，Simrank）
+
+作者：金柔
+链接：https://www.zhihu.com/question/315120636/answer/619826640
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 """
 from collections import defaultdict
 from concurrent import futures
@@ -24,7 +31,8 @@ class Matching(object):
         """
         recall_num = num + len(user.history)  # 避免筛除历史后数量不够;每个规则召回数量必定大于此数目
         match_funcs = [
-            (self.rule_base.get_popular_poems, num * 5),
+            (self.rule_base.get_popular_poems, num * 5),  # 热门召回
+            (self.rule_base.get_popular_poems, num)
         ]  # [(match_func,num)]
         with futures.ThreadPoolExecutor(max_workers=len(match_funcs)) as pool:
             to_do = [pool.submit(match_func, user, _num) for match_func, _num in match_funcs]

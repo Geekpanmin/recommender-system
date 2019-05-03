@@ -29,6 +29,11 @@ _declarative_constructor.__name__ = "__init__"
 class ToolMixin(object):
     def to_dict(self):
         _dic = {key: getattr(self, key) for key in self.__table__.columns.keys()}
+        if "tags" in _dic:
+            if _dic["tags"]:
+                _dic["tags"] = set(_dic["tags"].split(','))
+            else:
+                _dic["tags"] = set()
         return _dic
 
 

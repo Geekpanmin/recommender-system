@@ -1,6 +1,6 @@
 from recommendation.dao.db import DB
 from recommendation.dao.db_tools import try_commit_rollback_expunge
-from recommendation.dao.models.mysql_models import User, Poem
+from recommendation.dao.models.mysql_models import User, Poem, Poet, History
 
 
 class MysqlDB(DB):
@@ -18,5 +18,17 @@ class MysqlDB(DB):
         return poems
 
     @try_commit_rollback_expunge
+    def get_all_poets(self):
+        poets = self.session.query(Poet).limit(1000).all()
+        return poets
+
+    @try_commit_rollback_expunge
     def get_user_history(self, user_id):
-        return []
+        historys = self.session.query(History).filter_by(user_id=user_id).all()
+        history_poem_ids = []
+        if historys:
+            history_poem_ids = [history.poem_id for history in historys]
+        return history_poem_ids
+
+    def record_to_history(self, user_id, result_poems):
+        history = History(user_id=user_id, poem_id=result_poems)

@@ -1,10 +1,11 @@
 """基于规则的推荐"""
+from flask import g  # 引入g对象
 
 from recommendation.algorithms.common.constants import MatchAlgorithmEnum
 from recommendation.dao.memory import Memory
 from recommendation.dao.mysql_utils import MysqlDB
-from recommendation.utils.tools import try_catch_with_logging
 from recommendation.objects import ResultPoem
+from recommendation.utils.tools import try_catch_with_logging
 
 
 class RuleBase(object):
@@ -21,4 +22,17 @@ class RuleBase(object):
         """
         result_poems = [ResultPoem(poem_id, MatchAlgorithmEnum.rule_base, MatchAlgorithmEnum.rule_base, 0)
                         for poem_id in self.memory.popular_poem_ids[:num]]
+        return result_poems
+
+    @try_catch_with_logging(default_response=[])
+    def tags_fetch(self, user=None, num=None):
+        """标签召回"""
+        tags = set(g.tags)
+        result_poems = []
+        for poem_id, poem in self.memory.all_poems_dict.items():
+            match_tags = poem.tags & tags
+            if match_tags and len(result_poems) < num:
+                result_poem = ResultPoem(poem_id, MatchAlgorithmEnum.rule_base, MatchAlgorithmEnum.rule_base, 0,
+                                         reasons={"tags": match_tags})
+                result_poems.append(result_poem)
         return result_poems

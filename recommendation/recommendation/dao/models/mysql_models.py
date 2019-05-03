@@ -103,6 +103,30 @@ class Poet(BaseModel):
         super(Poet, self).__init__(**kwargs)
 
 
+class History(BaseModel):
+    __tablename__ = 'history'
+
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8mb4',
+        'schema': 'poem'
+    }
+
+    id = Column(INTEGER, primary_key=True, autoincrement=True, comment="id")
+    user_id = Column(INTEGER, nullable=False, comment="user id")
+    poem_id = Column(INTEGER, nullable=False, comment="poem id")
+    weather = Column(VARCHAR(512), default="", comment="天气情况")
+    addr = Column(VARCHAR(512), default="", comment="所在位置")
+    star = Column(SMALLINT, nullable=False, comment="是否点赞")
+    reason = Column(CHAR(50), default="", comment="数据生成原因")
+    type = Column(SMALLINT, nullable=False, comment="数据是真是假")
+    create_time = Column(DateTime, default=datetime.datetime.now(), comment="创建时间")
+    UniqueConstraint(user_id, poem_id)
+
+    def __init__(self, **kwargs):
+        super(History, self).__init__(**kwargs)
+
+
 def create_all():
     from recommendation.dao.db import mysql_db_engine
     BaseModel.metadata.create_all(mysql_db_engine)  # 创建表

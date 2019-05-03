@@ -6,7 +6,7 @@ import numpy as np
 from recommendation.algorithms.common.bases import largest_indices
 from recommendation.dao.memory import Memory
 from recommendation.dao.mysql_utils import MysqlDB
-from recommendation.objects import Poem
+from recommendation.objects import Poem, Poet
 from recommendation.utils.tools import synchronized
 
 
@@ -20,8 +20,10 @@ class Preprocessor(object):
     def load_all_feeds(self):
         """所有视频载入内存"""
         all_poems = self.mysql_db.get_all_poems()  # 2s
+        all_poets = self.mysql_db.get_all_poets()  # 2s
         assert len(all_poems) > 0
         self.memory.all_poems_dict = {_poem.id: Poem(**_poem.to_dict()) for _poem in all_poems}  # 1.5s
+        self.memory.all_poets_dict = {_poet.id: Poet(**_poet.to_dict()) for _poet in all_poets}  # 1.5s
         self.memory.all_poem_ids = list(self.memory.all_poems_dict.keys())
         self.memory.popular_poem_ids = self.get_popular_poem_ids(1000)
         log_str = '*** load {} feeds to memory'.format(len(self.memory.all_poems_dict))

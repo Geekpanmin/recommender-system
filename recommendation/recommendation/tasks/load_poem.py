@@ -1,7 +1,9 @@
+import datetime
 import json
 import os
-from recommendation.dao.models.mysql_models import Poet, Poem
+
 from config import data_dir
+from recommendation.dao.models.mysql_models import Poet, Poem, History
 
 gushiwenwang = os.path.join(data_dir, "poetry-master")
 
@@ -57,8 +59,32 @@ class Task(object):
             #     self.mysql_db.session.commit()
         self.mysql_db.session.commit()
 
-    def load_(self):
-        pass
+    def create_history(self):
+        count = 0
+        time_str = "2019-12-22 06:33:13"
+        history_dict = {
+            "create_time": datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+        }
+        history = History(**history_dict)
+        self.mysql_db.session.add(history)
+        count += 1
+        if count % 1000 == 0:  # 一千条存一次
+            try:
+                self.mysql_db.session.commit()
+            except:
+                self.mysql_db.session.rollback()
+                import traceback
+                print(traceback.format_exc())
+
+    def tag_poems(self):
+        """给诗词打标签"""
+        poems = self.mysql_db.session.query(Poem).all()
+        count = 0
+        for poem in poems:
+            poem.tags = poem.tags + ["tag"]  # 修改记录
+            self.mysql_db.session.commit()  # 提交修改
+            if count % 1000:
+                self.mysql_db.session.commit()
 
     def run(self):
         # self.load_gushiwenwang_poet()
