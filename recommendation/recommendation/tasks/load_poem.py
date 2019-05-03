@@ -15,6 +15,7 @@ class Task(object):
         self.mysql_db = MysqlDB()
 
     def load_gushiwenwang_poet(self):
+        """插入诗人信息"""
         gushiwenwang_poet = os.path.join(gushiwenwang, "poet")
         count = 0
         for poet_fname in os.listdir(gushiwenwang_poet):
@@ -31,6 +32,7 @@ class Task(object):
         self.mysql_db.session.commit()
 
     def load_gushiwenwang_poetry(self):
+        """插入古诗词"""
         gushiwenwang_poetry = os.path.join(gushiwenwang, "poetry")
         # i = 0
         for poetry_fname in os.listdir(gushiwenwang_poetry):
@@ -59,7 +61,8 @@ class Task(object):
             #     self.mysql_db.session.commit()
         self.mysql_db.session.commit()
 
-    def create_history(self):
+    def create_fake_history(self):
+        """创建一批节的观看记录"""
         count = 0
         time_str = "2019-12-22 06:33:13"
         history_dict = {
@@ -81,7 +84,7 @@ class Task(object):
         poems = self.mysql_db.session.query(Poem).all()
         count = 0
         for poem in poems:
-            poem.tags = poem.tags + ["tag"]  # 修改记录
+            poem.tags = ",".join(poem.tags.split(",") + ["tag"])  # 修改记录
             self.mysql_db.session.commit()  # 提交修改
             if count % 1000:
                 self.mysql_db.session.commit()

@@ -1,6 +1,9 @@
+import datetime
+
 from recommendation.dao.db import DB
-from recommendation.dao.db_tools import try_commit_rollback_expunge
+from recommendation.dao.db_tools import try_commit_rollback_expunge, try_commit_rollback
 from recommendation.dao.models.mysql_models import User, Poem, Poet, History
+from flask import g
 
 
 class MysqlDB(DB):
@@ -19,16 +22,23 @@ class MysqlDB(DB):
 
     @try_commit_rollback_expunge
     def get_all_poets(self):
-        poets = self.session.query(Poet).limit(1000).all()
+        poets = self.session.query(Poet).limit(100).all()
         return poets
 
     @try_commit_rollback_expunge
     def get_user_history(self, user_id):
+        if not g.filter_history:
+            return []
         historys = self.session.query(History).filter_by(user_id=user_id).all()
         history_poem_ids = []
         if historys:
             history_poem_ids = [history.poem_id for history in historys]
         return history_poem_ids
 
-    def record_to_history(self, user_id, result_poems):
-        history = History(user_id=user_id, poem_id=result_poems)
+    @try_commit_rollback
+    def insert_history(self, user_id, result_poems):
+        for result_poem in result_poems:
+            history = History(user_id=user_id, poem_id=result_poem.poem_id, type=1,
+                              ip=g.ip, weather=str(g.now_weather), addr=str(g.addr),
+                              reason=str(result_poem.reasons), create_time=datetime.datetime.now())
+            self.session.add(history)

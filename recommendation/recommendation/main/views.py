@@ -1,6 +1,6 @@
 import datetime
 
-from flask import jsonify, abort, request, current_app
+from flask import jsonify, abort, request, current_app, g
 
 from recommendation.apis.gaode import GaodeApi
 from recommendation.main.tags import Tag
@@ -40,15 +40,18 @@ def test():
 
 @main.route('/recommend/', methods=['GET', 'POST'])
 def recommend():
-    user_id = request.form.get("user_id", "")
-    num = int(request.form.get("num", 20))
-    tags = request.form.get("tags", [])
-    date_time = request.form.get("date_time", "")
-    ip_expand = request.form.get("ip_expand", False)
+    data = request.json  # payload
+    user_id = int(data.get("user_id", 0))
+    num = int(data.get("num", 5))
+    tags = data.get("tags", [])
+    date_time = data.get("date_time", {})
+    ip_expand = int(data.get("ip_expand", 0))
+    g.filter_history = int(data.get("filter_history", 1))
+    g.ip, g.addr, g.now_weather = request.remote_addr, "", ""
     if ip_expand:
-        ip = request.remote_addr
-        addr = gaode_api.get_ip_addr(ip)
+        addr = gaode_api.get_ip_addr(g.ip)
         now_weather = gaode_api.get_weather(addr["adcode"])
+        g.addr, g.now_weather = addr, now_weather
         if not date_time:
             now = datetime.datetime.now()
             date_time = {"month": now.month, "day": now.day, "hour": now.hour}

@@ -26,13 +26,13 @@ class Poet(metaclass=ObjectMetaClass):
 class ResultPoem(object):
     memory = Memory()
 
-    def __init__(self, poem_id, match_algorithm, rank_algorithm, score, type=0, reasons=None):
+    def __init__(self, poem_id, match_algorithm, rank_algorithm, score, type=0, reasons=""):
         """
         :param poem_id: str
         :param match_algorithm: str
         :param rank_algorithm: str
         :param score: float
-        :param type: int
+        :param type: int,诗词歌赋
         :param reasons: dict {"tags":["tag_1","tag_2"],""}
         """
         self.poem_id = poem_id
@@ -43,16 +43,11 @@ class ResultPoem(object):
         self.reasons = reasons
 
     def to_dict(self):
-        recommend = {"poem_id": self.poem_id, "match_algorithm": self.match_algorithm,
-                     "rank_algorithm": self.rank_algorithm, "score": self.score, "type": self.type,
-                     "reasons": self.reasons}
-        poem = self.memory.all_poems_dict[self.poem_id]
-        poet_name = ""
-        if poem.poet_id in self.memory.all_poets_dict:
-            poet_name = self.memory.all_poets_dict[poem.poet_id].name
-        poem = {"title": poem.name, "content": poem.content.replace("<br>", "\n").split("\n"),
-                "dynasty": poem.dynasty,
-                "tags": list(poem.tags),
-                "poet": poet_name}
-        data = {"poem": poem, "recommend": recommend}
+        recommend = {"match_algorithm": self.match_algorithm, "rank_algorithm": self.rank_algorithm,
+                     "score": self.score, "type": self.type, "reasons": self.reasons}
+        poem: PoemModel = self.memory.all_poems_dict[self.poem_id]  # Poem Object
+        _poem = {"title": poem.name, "poet": poem.poet_name, "dynasty": poem.dynasty,
+                 "content": poem.content.replace(" ", "").replace("<br>", "\n").split("\n"),
+                 "tags": list(poem.tags), "star": poem.star}
+        data = {"poem": _poem, "recommend": recommend}
         return data

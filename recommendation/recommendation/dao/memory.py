@@ -10,7 +10,7 @@ class Memory(object):
         if not cls._instance:
             _instance = super(Memory, cls).__new__(cls, *args, **kwargs)
             _instance.all_poems_dict = {}  # {"poem_id":Poem}
-            _instance.all_poets_dict = {}  # {"poem_id":Poem}
+            _instance.all_poets_dict = {}  # {"poet_id":Poet}
             _instance.all_poem_ids = []
             _instance.popular_poem_ids = []
             # instance
