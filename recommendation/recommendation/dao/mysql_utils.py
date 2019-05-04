@@ -17,12 +17,12 @@ class MysqlDB(DB):
 
     @try_commit_rollback_expunge
     def get_all_poems(self):
-        poems = self.session.query(Poem).limit(100).all()
+        poems = self.session.query(Poem).all()
         return poems
 
     @try_commit_rollback_expunge
     def get_all_poets(self):
-        poets = self.session.query(Poet).limit(100).all()
+        poets = self.session.query(Poet).all()
         return poets
 
     @try_commit_rollback_expunge

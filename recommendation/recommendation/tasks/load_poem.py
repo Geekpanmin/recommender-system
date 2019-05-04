@@ -10,7 +10,7 @@ gushiwenwang = os.path.join(data_dir, "poetry-master")
 from recommendation.dao.mysql_utils import MysqlDB
 
 
-class Task(object):
+class PoemTask(object):
     def __init__(self):
         self.mysql_db = MysqlDB()
 
@@ -60,34 +60,6 @@ class Task(object):
             # if i % 1000:
             #     self.mysql_db.session.commit()
         self.mysql_db.session.commit()
-
-    def create_fake_history(self):
-        """创建一批节的观看记录"""
-        count = 0
-        time_str = "2019-12-22 06:33:13"
-        history_dict = {
-            "create_time": datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
-        }
-        history = History(**history_dict)
-        self.mysql_db.session.add(history)
-        count += 1
-        if count % 1000 == 0:  # 一千条存一次
-            try:
-                self.mysql_db.session.commit()
-            except:
-                self.mysql_db.session.rollback()
-                import traceback
-                print(traceback.format_exc())
-
-    def tag_poems(self):
-        """给诗词打标签"""
-        poems = self.mysql_db.session.query(Poem).all()
-        count = 0
-        for poem in poems:
-            poem.tags = ",".join(poem.tags.split(",") + ["tag"])  # 修改记录
-            self.mysql_db.session.commit()  # 提交修改
-            if count % 1000:
-                self.mysql_db.session.commit()
 
     def run(self):
         # self.load_gushiwenwang_poet()

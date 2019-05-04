@@ -10,8 +10,11 @@ def deploy():
 
 def task():
     logging_config("task.log")
-    from recommendation.tasks.load_poem import Task
-    Task().run()
+    from recommendation.tasks.load_poem import PoemTask
+    from recommendation.tasks.tasks import TagTask
+    # PoemTask().run()
+    # TagTask().run()
+    TagTask().create_fake_history()
 
 
 def test():
@@ -37,5 +40,5 @@ def main():
 
 if __name__ == '__main__':
     deploy()
-    # task()
+    task()
     # main()

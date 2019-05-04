@@ -19,7 +19,8 @@ class User(BaseModel):
     id = Column(INTEGER, primary_key=True, autoincrement=True, comment="用户id")
     user_name = Column(VARCHAR(32), default="", comment="用户名")
     nick_name = Column(VARCHAR(32), default="", comment="昵称")
-    password = Column(VARCHAR(128), comment="密码")
+    province = Column(VARCHAR(128), default="", comment="省")
+    city = Column(VARCHAR(128), default="", comment="城市")
     avatar = Column(VARCHAR(32), default="", comment="头像")
     birthday = Column(DateTime, default="", comment="生日")
     gender = Column(SMALLINT, default=0, comment="性别[0-未填写，1-男，2-女，3-其他]")
@@ -28,10 +29,6 @@ class User(BaseModel):
     email = Column(VARCHAR(100), default="", unique=True, comment="邮箱")
     device_id = Column(CHAR(36), default="", comment="设备id")
     ip = Column(VARCHAR(45), default="", comment="用户ip地址")
-    geo_location = Column(VARCHAR(128), default="", comment="地理定位经纬坐标")
-    geo_country = Column(VARCHAR(128), default="", comment="定位国家")
-    status = Column(SMALLINT, default=0, comment="状态")
-    last_login_time = Column(DateTime(6), default="", comment="上次登录时间")
     create_time = Column(DateTime(6), default="", comment="注册时间")
 
 

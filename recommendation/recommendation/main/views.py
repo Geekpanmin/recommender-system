@@ -3,7 +3,7 @@ import datetime
 from flask import jsonify, abort, request, current_app, g
 
 from recommendation.apis.gaode import GaodeApi
-from recommendation.main.tags import Tag
+from recommendation.tasks.tags import Tag
 from recommendation.recommender import Recommender
 from . import main
 
