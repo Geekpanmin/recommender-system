@@ -25,3 +25,5 @@ recommendation/bpr/data/*
 recommendation/wide_and_deep/data/*
 recommendation_algorithms/wide_and_deep/data/*
 recommendation_algorithms/bpr/data/*
+recommendation/recommendation/algorithms/wide_deep/data/*
+
