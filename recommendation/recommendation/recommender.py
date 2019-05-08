@@ -31,5 +31,5 @@ class Recommender(object):
         matched_poems = self.matching.concurrent_match(user, num=max(num * 5, 100))
         result_poems = self.ranking.rank(user, num=num, matched_poems=matched_poems)  # 进一步排序,组合多算法结果
         self.db.insert_history(user_id, result_poems)  # 记录观看历史
-        self.view_help.print_result_poems(result_poems, num)  # 输出推荐视频详细信息，线上注释
+        # self.view_help.print_result_poems(result_poems, num)  # 输出推荐视频详细信息，线上注释
         return result_poems

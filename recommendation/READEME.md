@@ -23,6 +23,11 @@
 │   ├── main  //flask蓝图        
 │   │   └── views.py  //http视图路由                           
 │   ├── objects  //对象相关      
+│   ├── tasks  //对象相关   
+│   │   ├── load_poem.py //诗词导入数据库        
+│   │   ├── tags.py //上下文转化为tag         
+│   │   ├── tasks.py //给诗词打标签等         
+│   │   └── word2vec.py //词向量训练分析         
 │   ├── utils   //通用工具包               
 │   ├── exceptions.py  //异常          
 │   ├── ext.py  //flask 扩展    

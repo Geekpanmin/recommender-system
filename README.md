@@ -61,56 +61,21 @@
 要求：可作为教材的一章
     
 
-##  目录说明 
-├── docs //文档         
+##  目录说明     
+├── docs  //详细说明文档     
 ├── logs  //日志文件目录       
-├── recommendation //推荐系统主体        
-│   ├── algorithms  //推荐算法   
-│   │   ├── cf //协同过滤算法                  
-│   │   ├── common //公用小工具          
-│   │   │   ├── bases.py //基础工具函数         
-│   │   │   └── constants.py //常量          
-│   │   ├── recall //召回函数             
-│   │   │   ├── content_base.py //基于内容的召回           
-│   │   │   └── rule_base.py //基于规则的召回  
-│   │   ├── wide_deep //召回函数             
-│   │   │   ├── data_helper.py //数据准备             
-│   │   │   └── train.py //模型训练         
-│   │   ├── matching.py //召回阶段      
-│   │   └── ranking.py //排序阶段        
-│   ├── apis  //API   
-│   │   └── gaode.py //高德地图api         
-│   ├── dao  //数据库相关   
-│   │   ├── models //数据库表对应model               
-│   │   │   ├── ext_types.py //数据库列扩展类型             
-│   │   │   ├── mongo_models.py //mongoDB数据库表模型           
-│   │   │   └── mysql_models.py //mysql数据库表模型    
-│   │   ├── db.py  //处理数据库连接               
-│   │   ├── db_tools.py  //数据库相关小工具                  
-│   │   ├── memory.py  //内存管理                  
-│   │   ├── mongo_utils.py  //mongoDB查询语句               
-│   │   └── mysql_utils.py  //mysql查询语句                 
-│   ├── main  //flask蓝图        
-│   │   └── views.py  //http视图路由                           
-│   ├── objects  //对象相关    
-│   │   ├── __init__.py  //objects模块对外可导入部分                   
-│   │   ├── object_utils.py  //object通用工具               
-│   │   ├── poems.py  //poem对象                 
-│   │   └── users.py  //user对象     
-│   ├── tasks   //离线任务       
-│   │   ├── load_poem.py  //诗词数据存入mysql                        
-│   │   ├── tags.py  //用户上下文转换为tags                          
-│   │   ├── tasks.py  //给诗词打标签                 
-│   │   └── word2vec.py  //词向量训练        
-│   ├── utils   //通用工具包    
-│   │   ├── async_tools.py  //异步执行函数                      
-│   │   ├── enum.py  //不可变类型                       
-│   │   ├── logger.py  //log配置工具               
-│   │   ├── tools.py  //基础工具                   
-│   │   └── view_helper.py  //打印输出ResultPoem信息    
-│   ├── config.py  //配置文件                     
-│   ├── local_config.py  //本地配置文件，密码等                      
-│   ├── manage.py  //入口文件                       
-│   └── server.py  //服务启动文件                       
-└── recommendation_algorithms //前两次推荐作业          
-
+├── recommendation //推荐系统主体 ；详细说明见recommendation/READEME.md                                
+│   ├── algorithms  //推荐算法              
+│   ├── dao  //数据库相关                     
+│   ├── main  //flask蓝图,提供web服务          
+│   │   └── views.py  //http视图路由                             
+├── tests  //单元测试  
+├── config.py  //配置文件    
+├── local_config.py  //本地配置文件  
+├── manage.py  //入口文件    
+├── README.md  //说明文档   
+├── requirements.txt  //依赖包   
+├── server.py  //服务启动     
+├── recommendation_algorithms.py  //前两次作业        
+│   ├── bpr  //贝叶斯个性化排序      
+│   └──  wide_and_deep  //Wide&Deep模型      

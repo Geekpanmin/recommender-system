@@ -1,15 +1,5 @@
-from flask import Flask
 
-
-def create_app():
-    app = Flask(__name__)
-
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    return app
-
-
+```python
 import getpass
 from pprint import pprint
 import requests
@@ -59,3 +49,4 @@ res = requests.post(url, json={  # Payload
                    'score': 0,
                    'type': 0}}
 ]
+```
