@@ -79,3 +79,7 @@
 ├── recommendation_algorithms.py  //前两次作业        
 │   ├── bpr  //贝叶斯个性化排序      
 │   └──  wide_and_deep  //Wide&Deep模型      
+
+
+### 服务部署地址
+http://148.70.6.97/recommend/

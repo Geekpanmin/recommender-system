@@ -58,3 +58,7 @@
 ## 测试
      python3 tests/test_recommend.py
 
+
+
+### 服务部署地址
+http://148.70.6.97/recommend/
