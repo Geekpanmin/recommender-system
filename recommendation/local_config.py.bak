@@ -46,4 +46,4 @@ class LocalConfig:
     def mongodb_conf(self):
         return {"local": local_mongodb_conf, "prod": prod_mongodb_conf}[self.runtime]
 
-    gaode_api="165136a3b0e5cc354aa6b050ee1c7149"
+    gaode_api="高德API KEY"

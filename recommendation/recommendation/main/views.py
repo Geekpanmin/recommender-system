@@ -54,7 +54,7 @@ def recommend():
 
 
 @main.route('/recommend/', methods=['POST'])
-def recommend():
+def recommend_with_parm():
     data = request.json  # payload
     user_id = int(data.get("user_id", 0))
     num = int(data.get("num", 5))

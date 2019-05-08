@@ -20,4 +20,4 @@ app = create_app()  # 运行环境
 Preprocessor().run(app)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
