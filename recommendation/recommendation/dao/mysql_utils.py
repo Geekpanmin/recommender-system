@@ -1,9 +1,10 @@
 import datetime
 
+from flask import g
+
 from recommendation.dao.db import DB
 from recommendation.dao.db_tools import try_commit_rollback_expunge, try_commit_rollback
 from recommendation.dao.models.mysql_models import User, Poem, Poet, History
-from flask import g
 
 
 class MysqlDB(DB):

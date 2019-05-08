@@ -19,7 +19,7 @@ class GaodeApi(object):
                     "rectangle": "116.0119343,39.66127144;116.7829835,40.2164962"
                 }
         """
-        url = f"https://restapi.anmap.com/v3/ip?ip={ip}&output=json&key={self.key}"
+        url = f"https://restapi.amap.com/v3/ip?ip={ip}&output=json&key={self.key}"
         res = requests.get(url)
         data = res.json()
         return data
@@ -42,4 +42,6 @@ class GaodeApi(object):
         url = f"https://restapi.amap.com/v3/weather/weatherInfo?key={self.key}&city={adcode}&extensions=base&output=json"
         res = requests.get(url)
         now_weather = res.json()["lives"][0]
+        if now_weather["windpower"] == "≤3":
+            now_weather["windpower"] = "2"
         return now_weather

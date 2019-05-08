@@ -213,6 +213,19 @@ class Tag(object):
         humidity = now_weather["humidity"]  # 湿度
         return tags
 
+    def province_to_brev(self, province):
+        """返回省份简写"""
+        autonomous = {"内蒙古自治区": "宁夏", "广西壮族自治区": "广西", "西藏自治区": "西藏",
+                      "宁夏回族自治区": "宁夏", "新疆维吾尔自治区": "新疆"}
+        directly_city = {"北京市": "北京", "天津市": "天津", "重庆市": "重庆", "上海市": "上海"}
+        if province in autonomous:
+            province = autonomous[province]
+        elif province in directly_city:
+            province = directly_city[province]
+        else:
+            province = province.strip("省")
+        return province
+
     def get_addr_tags(self):
         """
         华东：山东、江苏、安徽、浙江、福建、上海
@@ -287,16 +300,7 @@ class Tag(object):
                     "city": "北京市",
         :return:
         """
-        autonomous = {"内蒙古自治区": "宁夏", "广西壮族自治区": "广西", "西藏自治区": "西藏",
-                      "宁夏回族自治区": "宁夏", "新疆维吾尔自治区": "新疆"}
-        directly_city = {"北京市": "北京", "天津市": "天津", "重庆市": "重庆", "上海市": "上海"}
-        province = self.addr["province"]
-        if province in autonomous:
-            province = autonomous[province]
-        elif province in directly_city:
-            province = directly_city[province]
-        else:
-            province = province.strip("省")
+        province = self.province_to_brev(self.addr["province"])
         city = self.addr["city"][:2]
         tags = self.positon_tags.get(province, set())
         tags.update(self.positon_tags.get(city, set()))
@@ -321,7 +325,7 @@ class Tag(object):
         柳：华北 4月
         :return:
         """
-        province = self.addr["province"]
+        province = self.province_to_brev(self.addr["province"])
         weather = self.now_weather["weather"]
         month = self.date_time["month"]
         region = self.province_to_region[province]

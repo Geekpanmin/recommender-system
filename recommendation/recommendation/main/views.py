@@ -43,6 +43,7 @@ def recommend():
     user_id = request.args.get("user_id", "")
     num = int(request.args.get("num", 10))
     g.ip, g.addr, g.now_weather = request.remote_addr, "", ""
+    g.filter_history = 1
     addr = gaode_api.get_ip_addr(g.ip)
     now_weather = gaode_api.get_weather(addr["adcode"])
     g.addr, g.now_weather = addr, now_weather
