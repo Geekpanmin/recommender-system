@@ -1,48 +1,55 @@
-# 服务器部署
+# recommendation
 
-1. 环境准备  
-> 安装nginx，按照docs/nginx.md 文档配置并启动nginx     
-> pip install -r requirements.txt
+## 项目介绍：
+推荐系统
 
-2.启动服务：
-> python3 server.py  
-or  
-> nohup gunicorn -w 2 --threads 4 -t 10 -k gevent -b 127.0.0.1:9001 server:app --log-level=debug --reload --max-requests 1000 &
-
-# gunicorn
-
-|参数|说明|  others|
-|---|---|  ---|  
-|-k|网络模型，gevent提升性能|默认使用同步阻塞的网络模型(-k sync)|
-|-w|work进程数目，注意内存占用|用于处理工作进程的数量，为正整数，默认为1。worker推荐的数量为当前的CPU个数*2 + 1|
-|--threads|线程数目，默认1|The number of worker threads for handling requests.A positive integer generally in the 2-4 x $(NUM_CORES) range|
-|--reload|监测到代码变动时重启服务|Restart workers when code changes.|
-|-b|绑定套接字|可绑定多个|
-|--max-requests|处理这么多请求后重启worker，避免内存泄漏|The maximum number of requests a worker will process before restarting|
-|-t INT, --timeout INT|无响应重启，默认30s|Workers silent for more than this many seconds are killed and restarted.|
+## 总体设计
+- recommendation目录下完成推荐系统功能  
+- 只有根目录下config允许从local_config导入配置，其余必须从config而非local_config导入配置 
 
 
-2、关闭和重启  
-> pkill gunicorn      //*是否加-f参数都会有约一分钟的延时
+##  目录说明     
+├── docs  //详细说明文档     
+├── logs  //日志文件目录       
+├── recommendation //推荐系统主体              
+│   ├── algorithms  //推荐算法       
+│   │   ├── common //公用小工具                  
+│   │   ├── recall //召回函数             
+│   │   │   ├── content_base.py //基于内容的召回           
+│   │   │   └── rule_base.py //基于规则的召回      
+│   │   ├── matching.py //召回阶段      
+│   │   └── ranking.py //排序阶段        
+│   ├── dao  //数据库相关                     
+│   ├── main  //flask蓝图        
+│   │   └── views.py  //http视图路由                           
+│   ├── objects  //对象相关      
+│   ├── utils   //通用工具包               
+│   ├── exceptions.py  //异常          
+│   ├── ext.py  //flask 扩展    
+│   ├── preprocessor.py  //项目启动预处理     
+│   └── recommender.py  //推荐系统入口   
+├── tests  //单元测试  
+├── config.py  //配置文件    
+├── local_config.py  //本地配置文件  
+├── manage.py  //入口文件    
+├── README.md  //说明文档   
+├── requirements.txt  //依赖包   
+├── server.py  //服务启动     
+├── recommendation_algorithms.py  //前两次作业        
+│   ├── bpr  //贝叶斯个性化排序      
+│   └──  wide_and_deep  //Wide&Deep模型      
 
 
+## 部署
+      pip install -r requirements.txt
+      按照docs/服务器部署.md部署服务
 
-### 参考文档
-[gunicorn doc](http://docs.gunicorn.org/en/latest/settings.html)
 
-  
-情景建模：  
-时间地点  
+## 运行
+     python3 server.py
+     or
+    nohup gunicorn -w 2 --threads 4 -t 10 -k gevent -b 127.0.0.1:9001 server:app --log-level=debug --reload --max-requests 1000 &
 
-基于位置信息的推荐  
-LBS：基于位置的服务、物理地点、区域范围  
-位置变化序列   
+## 测试
+     python3 tests/test_recommend.py
 
-移动推荐与传统推荐的区别  
-餐厅推荐   
-空间轨迹：时序位置   
-主动：带位置的标签、
-被动：手机通信基站位置、ip   
-混合推荐  
-
-     

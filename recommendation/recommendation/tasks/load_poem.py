@@ -61,6 +61,18 @@ class PoemTask(object):
             #     self.mysql_db.session.commit()
         self.mysql_db.session.commit()
 
+    def gushiwenwang_poetry(self):
+        """插入古诗词"""
+        gushiwenwang_poetry = os.path.join(gushiwenwang, "poetry")
+        # i = 0
+        with open(os.path.join(data_dir, "poems.txt"), "w", encoding="utf-8") as f_poem:
+            for poetry_fname in os.listdir(gushiwenwang_poetry):
+                with open(os.path.join(gushiwenwang_poetry, poetry_fname), "r", encoding="utf-8") as f:
+                    poetry_json = json.load(f)
+                line = f"{poetry_json['name']}  {poetry_json['content'].replace('<br>', '')} \n"
+                f_poem.write(line)
+                f_poem.flush()
+
     def run(self):
         # self.load_gushiwenwang_poet()
         self.load_gushiwenwang_poetry()

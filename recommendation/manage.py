@@ -11,10 +11,11 @@ def deploy():
 def task():
     logging_config("task.log")
     from recommendation.tasks.load_poem import PoemTask
+    PoemTask().gushiwenwang_poetry()
     from recommendation.tasks.tasks import TagTask
     # PoemTask().run()
     # TagTask().run()
-    TagTask().create_fake_history()
+    # TagTask().create_fake_history()
 
 
 def test():
