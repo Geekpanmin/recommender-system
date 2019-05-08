@@ -3,8 +3,8 @@ import datetime
 from flask import jsonify, abort, request, current_app, g
 
 from recommendation.apis.gaode import GaodeApi
-from recommendation.tasks.tags import Tag
 from recommendation.recommender import Recommender
+from recommendation.tasks.tags import Tag
 from . import main
 
 recommender = Recommender()
@@ -38,7 +38,22 @@ def test():
     return jsonify({"status": "success"})
 
 
-@main.route('/recommend/', methods=['GET', 'POST'])
+@main.route('/recommend/', methods=['GET'])
+def recommend():
+    user_id = request.args.get("user_id", "")
+    num = int(request.args.get("num", 10))
+    g.ip, g.addr, g.now_weather = request.remote_addr, "", ""
+    addr = gaode_api.get_ip_addr(g.ip)
+    now_weather = gaode_api.get_weather(addr["adcode"])
+    g.addr, g.now_weather = addr, now_weather
+    now = datetime.datetime.now()
+    date_time = {"month": now.month, "day": now.day, "hour": now.hour}
+    default_tags = Tag(addr=addr, now_weather=now_weather, date_time=date_time).get_tags()
+    poems = recommender.recommend(user_id, num, tags=default_tags)
+    return jsonify([poem.to_dict() for poem in poems])
+
+
+@main.route('/recommend/', methods=['POST'])
 def recommend():
     data = request.json  # payload
     user_id = int(data.get("user_id", 0))
